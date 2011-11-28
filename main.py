@@ -48,23 +48,6 @@ class SPID(QtGui.QDialog, Ui_SPIDMainWindow):
             # Disable record button
             self.pushButtonRecord.setEnabled(False)
 
-
-
-    """
-    def createNewRecordWindow(self):
-        self.newRecordWindow = SPIDNewRecordWindow(self)
-
-        self.newRecordWindow.kactionselectorDrugs.availableListWidget().addItems(self.drugs)
-        self.newRecordWindow.kactionselectorICD.availableListWidget().addItems(sorted(self.icd10))
-
-        self.newRecordWindow.show()
-
-    def createNewSearchWindow(self):
-        self.searchRecordWindow = SPIDSearchRecordWindow(self)
-        self.searchRecordWindow.show()
-    """
-
-
 if __name__ == "__main__":
 
     import sys
