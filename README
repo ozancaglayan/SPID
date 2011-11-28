@@ -1,4 +1,18 @@
-/etc/speakerids
------------------
+What's this?
+------------
 
-Folder to hold speaker identification enrollments.
+This is a tiny GUI for recording system users' voices
+for further identification through PAM.
+
+Requirements
+------------
+
+Python >= 2.x
+PyAudio - Python bindings for PortAudio
+    (http://people.csail.mit.edu/hubert/pyaudio/)
+PortAudio - Portable Audio I/O Library
+    (http://www.portaudio.com)
+MARF - Modular Audio Recognition Framework
+    (http://marf.sourceforge.net/)
+PyQt4 - Qt4 bindings for Python
+    (http://www.riverbankcomputing.co.uk/software/pyqt/download)
