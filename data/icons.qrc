@@ -1,0 +1,7 @@
+<RCC>
+  <qresource prefix="/">
+    <file>system-users.png</file>
+    <file>media-playback-start.png</file>
+    <file>media-record.png</file>
+  </qresource>
+</RCC>
