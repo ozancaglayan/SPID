@@ -6,8 +6,9 @@ from PyQt4 import QtCore
 
 from ui.ui_mainwindow import Ui_SPIDMainWindow
 
-#from ehrnewrecordwindow import SPIDNewRecordWindow
-#from ehrsearchrecordwindow import SPIDSearchRecordWindow
+from systemuserhelper import SystemUsers
+
+from spidrecordwindow import SPIDRecordWindow
 
 class SPID(QtGui.QDialog, Ui_SPIDMainWindow):
     def __init__(self, parent=None):
@@ -16,9 +17,38 @@ class SPID(QtGui.QDialog, Ui_SPIDMainWindow):
         self.setupUi(self)
 
         # Connect signals for buttons
-        #self.pushButtonNewRecord.clicked.connect(self.createNewRecordWindow)
-        #self.pushButtonSearchRecord.clicked.connect(self.createNewSearchWindow)
-        #self.pushButtonExit.clicked.connect(QtGui.qApp.quit)
+        self.comboBoxUsers.currentIndexChanged[str].connect(self.reflectUserProperties)
+        self.pushButtonRecord.clicked.connect(self.slotShowRecordWindow)
+
+        # Create SystemUsers instance
+        self.systemUsers = SystemUsers()
+
+        # Fill user list
+        for user in sorted(self.systemUsers.getUsers().keys()):
+            self.comboBoxUsers.addItem(user)
+
+    def slotShowRecordWindow(self):
+        recordWindow = SPIDRecordWindow(self)
+        recordWindow.show()
+
+    def reflectUserProperties(self, text):
+        userEntry = self.systemUsers.getUser(unicode(text))
+        if userEntry:
+            self.labelLoginName.setText(unicode(userEntry.loginName))
+            self.labelRealName.setText(unicode(userEntry.realName))
+            self.labelUserID.setText(unicode("%s" % userEntry.userID))
+
+            # Enable record button
+            self.pushButtonRecord.setEnabled(True)
+        else:
+            self.labelLoginName.clear()
+            self.labelRealName.clear()
+            self.labelUserID.clear()
+
+            # Disable record button
+            self.pushButtonRecord.setEnabled(False)
+
+
 
     """
     def createNewRecordWindow(self):

@@ -3,6 +3,12 @@
 
 import pwd
 
+class User(object):
+    def __init__(self, pw):
+        self.loginName = pw.pw_name
+        self.userID = pw.pw_uid
+        self.realName = pw.pw_gecos
+
 class SystemUsers(object):
     def __init__(self):
         self.users = {}
@@ -11,4 +17,13 @@ class SystemUsers(object):
         for entry in pwd.getpwall():
             if entry.pw_uid >= 1000 and entry.pw_uid < 2000:
                 # Regular user
-                self.users[pw_name] = entry
+                self.users[entry.pw_name] = entry
+
+    def getUsers(self):
+        return self.users
+
+    def getUser(self, user):
+        try:
+            return User(self.users[user])
+        except KeyError, ke:
+            print "User %s not found!" % user
