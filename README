@@ -16,3 +16,7 @@ MARF - Modular Audio Recognition Framework
     (http://marf.sourceforge.net/)
 PyQt4 - Qt4 bindings for Python
     (http://www.riverbankcomputing.co.uk/software/pyqt/download)
+
+Installation
+-------------
+1. Run install-marf.sh as root. This will install MARF under /opt/marf
