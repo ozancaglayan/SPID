@@ -11,11 +11,16 @@ class MarfSpeaker(object):
         self.s_training = s_training
         self.s_testing = s_testing
 
+class MarfSample(object):
+    def __init__(self, sample_path):
+        pass
 
 class Marf(object):
     def __init__(self, marf_path="marf"):
         self.marf_path = marf_path
         self.speaker_db = os.path.join(self.marf_path, "speakers.txt")
+        self.training_samples_dir = "training-samples"
+        self.testing_samples_dir = "testing-samples"
 
         # Should always be run in the marf directory
         self.cmd = ["java", "-ea", "-Xmx512m", "-jar", "SpeakerIdentApp.jar"]
@@ -42,20 +47,36 @@ class Marf(object):
         # Hold the next id
         self.next_id = max(self.speakers.keys()) + 1
 
+    def get_training_sample_path(self, training_sample):
+        return os.path.join(os.getcwd(), self.marf_path,
+                            self.training_samples_dir,
+                            training_sample)
+
+    def get_testing_sample_path(self, testing_sample):
+        return os.path.join(os.getcwd(), self.marf_path,
+                            self.testing_samples_dir,
+                            testing_sample)
+
     def get_all_speakers(self):
         return self.speakers
 
+    def get_training_samples(self, s_id):
+        return sorted(self.speakers[s_id].s_training)
+
+    def get_testing_samples(self, s_id):
+        pass
+
     def get_trained_speakers(self):
-        d =  {}
+        d =  []
         for key, value in self.speakers.items():
             if value.s_training:
-                d[key] = value
+                d.append(value)
 
-        return d
+        return sorted(d, key=lambda spkr: spkr.s_name)
 
     def train(self):
         train_cmd = self.cmd[:]
-        train_cmd.extend(["--train", "training-samples",
+        train_cmd.extend(["--train", self.training_samples_dir,
                           "-endp", "-lpc", "-cheb"])
         process = subprocess.Popen(train_cmd,
                                    cwd=self.marf_path,
@@ -67,7 +88,7 @@ class Marf(object):
     def identify(self, sample):
         # sample is the temporarily recorded wave file
         ident_cmd = self.cmd[:]
-        ident_cmd.extend(["--ident", "testing-samples/%s" % sample,
+        ident_cmd.extend(["--ident", "%s/%s" % (self.testing_samples_dir, sample),
                           "-endp", "-lpc", "-cheb"])
         process = subprocess.Popen(ident_cmd,
                                    cwd=self.marf_path,
