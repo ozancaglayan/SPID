@@ -66,6 +66,16 @@ class Marf(object):
     def get_testing_sample(self, s_id):
         return self.speakers[s_id].s_testing
 
+    def get_next_training_sample_path(self, s_id):
+        import time
+        file_name = "%s-%s.wav" % (self.speakers[s_id].s_name.lower(),
+                                   time.strftime("%Y%m%d_%H%M%S"))
+        return os.path.join(os.getcwd(), self.marf_path,
+                            self.training_samples_dir, file_name)
+
+        print file_name
+        return file_name
+
     def train(self):
         train_cmd = self.cmd[:]
         train_cmd.extend(["--train", self.training_samples_dir,
@@ -115,32 +125,10 @@ class Marf(object):
             if s_name:
                 speaker.s_name = s_name
             if s_training:
-                speaker.s_training = s_training
+                speaker.s_training.append(os.path.basename(s_training))
             if s_testing:
                 speaker.s_testing = s_testing
         except KeyError, e:
             print "No speaker with id %s!" % s_id
 
-
-
-
-if __name__ == "__main__":
-
-    m = Marf()
-    #m.add_speaker("Ozan", ["ozan1.wav", "ozan2.wav"], "ozan-test.wav")
-    """
-    print "Training: %s" % m.train()
-
-    # Random identify
-    import math
-    import time
-    import random
-
-    random.seed(time.time())
-
-    trained_speakers = m.get_trained_speakers()
-    random_id = int(math.floor(random.random()*len(trained_speakers)))
-    speaker = trained_speakers[random_id]
-    print "Identifying (%d) %s" % (speaker.s_id, speaker.s_name)
-    print "ID Identified: %s" % m.identify(speaker.s_testing)
-    """
+        self.write_speakers()

@@ -12,6 +12,8 @@ from spidrecordwindow import SPIDRecordWindow
 
 from Marf import Marf
 
+import os
+
 class SPID(QtGui.QDialog, Ui_SPIDMainWindow):
     def __init__(self, parent=None):
         QtGui.QDialog.__init__(self, parent)
@@ -70,15 +72,21 @@ class SPID(QtGui.QDialog, Ui_SPIDMainWindow):
         self.comboBoxUsers.setCurrentIndex(self.comboBoxUsers.findText(s_name))
 
     def slotShowTrainingDialog(self):
-        messageBox = QtGui.QMessageBox(self)
-        messageBox.setText("Training...")
-        messageBox.setWindowTitle("Training...")
-        #messageBox.addButton(QtGui.QMessageBox.Ok)
-        # Save speakers only when training
-        # self.marf.write_speakers()
-        messageBox.show()
+        self.groupBox.setEnabled(False)
+        QtGui.qApp.processEvents()
+        self.setWindowTitle("Training...")
+        QtGui.qApp.processEvents()
+        QtGui.QApplication.setOverrideCursor(QtGui.QCursor(QtCore.Qt.WaitCursor))
+
+        # Train
+        self.marf.write_speakers()
         ret = self.marf.train()
-        messageBox.setText(ret)
+
+        # Restore cursor
+        QtGui.QApplication.restoreOverrideCursor()
+        QtGui.QApplication.restoreOverrideCursor()
+        self.setWindowTitle("Speaker Identification")
+        self.groupBox.setEnabled(True)
 
     def slotShowIdentifyDialog(self):
         # FIXME
@@ -110,16 +118,24 @@ class SPID(QtGui.QDialog, Ui_SPIDMainWindow):
 
         # Set file path and start playing
         self.phonon.setCurrentSource(Phonon.MediaSource(file_path))
-        #self.pushButtonStop.setEnabled(True)
         self.phonon.play()
 
     def slotStopPlayback(self):
         self.phonon.stop()
-        #self.pushButtonStop.setEnabled(False)
 
     def slotShowRecordWindow(self):
+        self._last_id, ok = self.comboBoxUsers.itemData(self.comboBoxUsers.currentIndex()).toInt()
         recordWindow = SPIDRecordWindow(self)
+        self._fileName = self.marf.get_next_training_sample_path(self._last_id)
+        recordWindow.setFileName(self._fileName)
         recordWindow.show()
+
+
+    def slotSampleRecordingFinished(self):
+        self.marf.update_speaker(self._last_id, s_training=self._fileName)
+
+        # Refresh the list
+        self.reflectUserProperties(self.comboBoxUsers.currentIndex())
 
     def reflectUserProperties(self, index):
         s_id, ok = self.comboBoxUsers.itemData(index).toInt()

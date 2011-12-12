@@ -14,49 +14,74 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Record A Voice</string>
+   <string>Record A Sample</string>
   </property>
   <property name="windowIcon">
    <iconset resource="../data/icons.qrc">
     <normaloff>:/media-record.png</normaloff>:/media-record.png</iconset>
   </property>
-  <widget class="QPushButton" name="pushButtonStartRecording">
-   <property name="geometry">
-    <rect>
-     <x>41</x>
-     <y>1</y>
-     <width>86</width>
-     <height>25</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>Record</string>
-   </property>
-   <property name="icon">
-    <iconset resource="../data/icons.qrc">
-     <normaloff>:/media-record.png</normaloff>:/media-record.png</iconset>
-   </property>
-  </widget>
-  <widget class="QPushButton" name="pushButtonStopRecording">
-   <property name="enabled">
-    <bool>false</bool>
-   </property>
-   <property name="geometry">
-    <rect>
-     <x>131</x>
-     <y>1</y>
-     <width>73</width>
-     <height>25</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>Stop</string>
-   </property>
-   <property name="icon">
-    <iconset resource="../data/icons.qrc">
-     <normaloff>:/media-playback-stop.png</normaloff>:/media-playback-stop.png</iconset>
-   </property>
-  </widget>
+  <layout class="QGridLayout" name="gridLayout">
+   <item row="0" column="0">
+    <layout class="QHBoxLayout" name="horizontalLayout" stretch="1,4">
+     <item>
+      <widget class="QLabel" name="label">
+       <property name="text">
+        <string>File name:</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLabel" name="labelFileName">
+       <property name="text">
+        <string/>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item row="1" column="0">
+    <layout class="QHBoxLayout" name="horizontalLayout_2">
+     <item>
+      <spacer name="horizontalSpacer">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item>
+      <widget class="QPushButton" name="pushButtonStartRecording">
+       <property name="text">
+        <string>Record</string>
+       </property>
+       <property name="icon">
+        <iconset resource="../data/icons.qrc">
+         <normaloff>:/media-record.png</normaloff>:/media-record.png</iconset>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="pushButtonStopRecording">
+       <property name="enabled">
+        <bool>false</bool>
+       </property>
+       <property name="text">
+        <string>Stop</string>
+       </property>
+       <property name="icon">
+        <iconset resource="../data/icons.qrc">
+         <normaloff>:/media-playback-stop.png</normaloff>:/media-playback-stop.png</iconset>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+  </layout>
  </widget>
  <resources>
   <include location="../data/icons.qrc"/>
