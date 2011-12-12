@@ -64,7 +64,7 @@ class SPID(QtGui.QDialog, Ui_SPIDMainWindow):
         self.lineEditNewSpeaker.clear()
 
         # Add speaker to marf DB
-        self.marf.add_speaker(unicode(s_name), [], "")
+        self.marf.add_speaker(unicode(s_name), [], [])
 
         # Refresh the list
         self.fill_speaker_list()
@@ -121,9 +121,7 @@ class SPID(QtGui.QDialog, Ui_SPIDMainWindow):
 
     def slotShowRecordWindow(self):
         self._last_id, ok = self.comboBoxUsers.itemData(self.comboBoxUsers.currentIndex()).toInt()
-        recordWindow = SPIDRecordWindow(self)
-        self._fileName = self.marf.get_next_training_sample_path(self._last_id)
-        recordWindow.setFileName(self._fileName)
+        recordWindow = SPIDRecordWindow(self, self._last_id)
         recordWindow.show()
 
     def slotIdentifyFinished(self):
@@ -158,7 +156,7 @@ class SPID(QtGui.QDialog, Ui_SPIDMainWindow):
         s_id, ok = self.comboBoxUsers.itemData(index).toInt()
         training_samples = self.marf.get_training_samples(s_id)
         self.listWidgetEnrollments.clear()
-        testing_sample = self.marf.get_testing_samples(s_id)[0]
+        testing_sample = bool(self.marf.get_testing_samples(s_id))
         self.pushButtonPlayTestingSample.setEnabled(bool(testing_sample))
         self.pushButtonPlay.setEnabled(False)
         for sample in training_samples:
@@ -167,7 +165,6 @@ class SPID(QtGui.QDialog, Ui_SPIDMainWindow):
                                          self.listWidgetEnrollments)
 
 if __name__ == "__main__":
-
     import sys
 
     app = QtGui.QApplication(sys.argv)
