@@ -1,9 +1,6 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
-# Pardus Desktop Services
-# Thread Module ~ thread.py
-
 # Copyright (C) 2010, TUBITAK/UEKAE
 # 2010 - Gökmen Göksel <gokmen:pardus.org.tr>
 
@@ -34,6 +31,7 @@ class PThread(QThread):
         try:
             self.data = self.action(*self.args, **self.kwargs)
         except Exception, e:
+            print e
             if self.exceptionHandler:
                 self.exceptionHandler(e)
         finally:
@@ -44,4 +42,3 @@ class PThread(QThread):
 
     def get(self):
         return self.data
-

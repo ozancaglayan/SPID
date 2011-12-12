@@ -58,21 +58,13 @@ class Marf(object):
                             testing_sample)
 
     def get_all_speakers(self):
-        return self.speakers
+        return sorted(self.speakers.values(), key=lambda spkr: spkr.s_name)
 
     def get_training_samples(self, s_id):
         return sorted(self.speakers[s_id].s_training)
 
-    def get_testing_samples(self, s_id):
-        pass
-
-    def get_trained_speakers(self):
-        d =  []
-        for key, value in self.speakers.items():
-            if value.s_training:
-                d.append(value)
-
-        return sorted(d, key=lambda spkr: spkr.s_name)
+    def get_testing_sample(self, s_id):
+        return self.speakers[s_id].s_testing
 
     def train(self):
         train_cmd = self.cmd[:]
@@ -83,8 +75,6 @@ class Marf(object):
                                    stdout=subprocess.PIPE,
                                    stderr=subprocess.PIPE)
         return process.communicate()[0]
-        #return process.communicate()[0].startswith("Done training on folder \"training-samples\".")
-
 
     def identify(self, sample):
         # sample is the temporarily recorded wave file
@@ -117,9 +107,20 @@ class Marf(object):
                                                   s_name,
                                                   s_training,
                                                   s_testing)
-
-        self.write_speakers()
         self.next_id += 1
+
+    def update_speaker(self, s_id, s_name=None, s_training=None, s_testing=None):
+        try:
+            speaker = self.speakers[s_id]
+            if s_name:
+                speaker.s_name = s_name
+            if s_training:
+                speaker.s_training = s_training
+            if s_testing:
+                speaker.s_testing = s_testing
+        except KeyError, e:
+            print "No speaker with id %s!" % s_id
+
 
 
 

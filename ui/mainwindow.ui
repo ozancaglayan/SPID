@@ -66,6 +66,30 @@
           </property>
          </spacer>
         </item>
+        <item>
+         <widget class="QLineEdit" name="lineEditNewSpeaker">
+          <property name="text">
+           <string/>
+          </property>
+          <property name="placeholderText">
+           <string>Enter a new name...</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="pushButtonAddSpeaker">
+          <property name="enabled">
+           <bool>false</bool>
+          </property>
+          <property name="text">
+           <string>Add Speaker</string>
+          </property>
+          <property name="icon">
+           <iconset resource="../data/icons.qrc">
+            <normaloff>:/list-add.png</normaloff>:/list-add.png</iconset>
+          </property>
+         </widget>
+        </item>
        </layout>
       </item>
       <item row="1" column="0">
@@ -83,7 +107,7 @@
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Droid Sans'; font-size:9pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Below is the list of training samples for the selected speaker. Click &amp;quot;&lt;span style=&quot; font-weight:600;&quot;&gt;Add Sample&amp;quot;&lt;/span&gt;&lt;br/&gt; to add a new training sample for this speaker.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Below is the list of training samples for the selected speaker. Click &amp;quot;&lt;span style=&quot; font-weight:600;&quot;&gt;Record Sample&amp;quot;&lt;/span&gt;&lt;br /&gt; to record a new training sample for this speaker.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
              </property>
              <property name="margin">
               <number>3</number>
@@ -96,7 +120,7 @@ p, li { white-space: pre-wrap; }
               <bool>true</bool>
              </property>
              <property name="text">
-              <string>Train</string>
+              <string>Save &amp;&amp; Train</string>
              </property>
              <property name="icon">
               <iconset resource="../data/icons.qrc">
@@ -105,16 +129,16 @@ p, li { white-space: pre-wrap; }
             </widget>
            </item>
            <item>
-            <widget class="QPushButton" name="pushButtonAddSample">
+            <widget class="QPushButton" name="pushButtonRecordSample">
              <property name="enabled">
-              <bool>true</bool>
+              <bool>false</bool>
              </property>
              <property name="text">
-              <string>Add Sample</string>
+              <string>Record Sample</string>
              </property>
              <property name="icon">
               <iconset resource="../data/icons.qrc">
-               <normaloff>:/list-add.png</normaloff>:/list-add.png</iconset>
+               <normaloff>:/media-record.png</normaloff>:/media-record.png</iconset>
              </property>
             </widget>
            </item>
@@ -145,6 +169,34 @@ p, li { white-space: pre-wrap; }
       </item>
       <item row="2" column="0">
        <layout class="QHBoxLayout" name="horizontalLayout">
+        <item>
+         <widget class="QPushButton" name="pushButtonPlayTestingSample">
+          <property name="enabled">
+           <bool>false</bool>
+          </property>
+          <property name="text">
+           <string>Play Testing Sample</string>
+          </property>
+          <property name="icon">
+           <iconset resource="../data/icons.qrc">
+            <normaloff>:/audio-ac3.png</normaloff>:/audio-ac3.png</iconset>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="pushButtonIdentify">
+          <property name="enabled">
+           <bool>true</bool>
+          </property>
+          <property name="text">
+           <string>Identify</string>
+          </property>
+          <property name="icon">
+           <iconset resource="../data/icons.qrc">
+            <normaloff>:/system-users.png</normaloff>:/system-users.png</iconset>
+          </property>
+         </widget>
+        </item>
         <item>
          <spacer name="horizontalSpacer">
           <property name="orientation">
