@@ -82,7 +82,8 @@ class Marf(object):
                                    cwd=self.marf_path,
                                    stdout=subprocess.PIPE,
                                    stderr=subprocess.PIPE)
-        return process.communicate()[0].startswith("Done training on folder \"training-samples\".")
+        return process.communicate()[0]
+        #return process.communicate()[0].startswith("Done training on folder \"training-samples\".")
 
 
     def identify(self, sample):
