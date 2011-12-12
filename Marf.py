@@ -11,10 +11,6 @@ class MarfSpeaker(object):
         self.s_training = s_training
         self.s_testing = s_testing
 
-class MarfSample(object):
-    def __init__(self, sample_path):
-        pass
-
 class Marf(object):
     def __init__(self, marf_path="marf"):
         self.marf_path = marf_path
@@ -22,10 +18,10 @@ class Marf(object):
         self.training_samples_dir = "training-samples"
         self.testing_samples_dir = "testing-samples"
 
+        self.speakers = {}
+
         # Should always be run in the marf directory
         self.cmd = ["java", "-ea", "-Xmx512m", "-jar", "SpeakerIdentApp.jar"]
-
-        self.speakers = {}
 
         # Fill speaker list
         for line in open(self.speaker_db, "r").readlines():
@@ -100,10 +96,9 @@ class Marf(object):
                                    stdout=subprocess.PIPE,
                                    stderr=subprocess.PIPE)
         stdout = process.communicate()[0]
-        print stdout
         for line in stdout.split("\n"):
-            if "Expected Speaker's ID:" in line.strip():
-                return line.split("Expected Speaker's ID:")[1].strip()
+            if "Speaker identified:" in line.strip():
+                return line.split(":")[1].strip()
 
     def write_speakers(self):
         speaker_file = open(self.speaker_db, "w")
@@ -125,15 +120,13 @@ class Marf(object):
         self.next_id += 1
         self.write_speakers()
 
-    def update_speaker(self, s_id, s_name=None, s_training=None, s_testing=None):
+    def update_speaker(self, s_id, s_training=None, s_testing=None):
         try:
             speaker = self.speakers[s_id]
-            if s_name:
-                speaker.s_name = s_name
             if s_training:
-                speaker.s_training.append(os.path.basename(s_training))
+                speaker.s_training.append(s_training)
             if s_testing:
-                speaker.s_testing.append(os.path.basename(s_testing))
+                speaker.s_testing.append(s_testing)
         except KeyError, e:
             print "No speaker with id %s!" % s_id
 

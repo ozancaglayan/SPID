@@ -131,9 +131,7 @@ class SPID(QtGui.QDialog, Ui_SPIDMainWindow):
         QtGui.qApp.processEvents()
         QtGui.QApplication.setOverrideCursor(QtGui.QCursor(QtCore.Qt.WaitCursor))
 
-        #self.marf.write_speakers()
         ret = self.marf.identify(os.path.basename(self._last_testing_filename))
-        print ret
 
         # Restore cursor
         QtGui.QApplication.restoreOverrideCursor()
@@ -141,13 +139,21 @@ class SPID(QtGui.QDialog, Ui_SPIDMainWindow):
         self.setWindowTitle("Speaker Identification")
         self.groupBox.setEnabled(True)
 
+        QtGui.QMessageBox.information(self,
+                                      "Identification Results",
+                                      "<b>Identified Speaker: </b>%s" % ret)
+
 
     def slotShowIdentifyDialog(self):
         identifyWindow = SPIDIdentifyWindow(self)
         identifyWindow.show()
 
     def slotSampleRecordingFinished(self):
-        self.marf.update_speaker(self._last_id, s_training=self._fileName)
+        fileName = os.path.basename(self._fileName)
+        if fileName.startswith("testing"):
+            self.marf.update_speaker(self._last_id, s_testing=fileName)
+        else:
+            self.marf.update_speaker(self._last_id, s_training=fileName)
 
         # Refresh the list
         self.reflectUserProperties(self.comboBoxUsers.currentIndex())
