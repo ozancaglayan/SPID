@@ -12,11 +12,12 @@ PyAudio - Python bindings for PortAudio
     (http://people.csail.mit.edu/hubert/pyaudio/)
 PortAudio - Portable Audio I/O Library
     (http://www.portaudio.com)
-MARF - Modular Audio Recognition Framework
+MARF - Modular Audio Recognition Framework (will be downloaded by install-marf.sh)
     (http://marf.sourceforge.net/)
 PyQt4 - Qt4 bindings for Python
     (http://www.riverbankcomputing.co.uk/software/pyqt/download)
 
 Installation
 -------------
-1. Run install-marf.sh as root. This will install MARF under /opt/marf
+1. Run install-marf.sh in SPID directory. Then run python build.py -x
+to run the tool.

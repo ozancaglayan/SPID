@@ -3,7 +3,7 @@
 
 from PyQt4 import QtGui
 from PyQt4 import QtCore
-from PyKDE4.phonon import Phonon
+from PyQt4.phonon import Phonon
 
 from ui.ui_mainwindow import Ui_SPIDMainWindow
 from spidrecordwindow import SPIDRecordWindow
