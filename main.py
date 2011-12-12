@@ -6,9 +6,8 @@ from PyQt4 import QtCore
 from PyKDE4.phonon import Phonon
 
 from ui.ui_mainwindow import Ui_SPIDMainWindow
-
-#from spidprogresswindow import SPIDProgressWindow
 from spidrecordwindow import SPIDRecordWindow
+from spididentifywindow import SPIDIdentifyWindow
 
 from Marf import Marf
 
@@ -88,10 +87,6 @@ class SPID(QtGui.QDialog, Ui_SPIDMainWindow):
         self.setWindowTitle("Speaker Identification")
         self.groupBox.setEnabled(True)
 
-    def slotShowIdentifyDialog(self):
-        # FIXME
-        pass
-
     def slotPhononPlaybackFinished(self):
         self.pushButtonStop.setEnabled(False)
 
@@ -130,6 +125,27 @@ class SPID(QtGui.QDialog, Ui_SPIDMainWindow):
         recordWindow.setFileName(self._fileName)
         recordWindow.show()
 
+    def slotIdentifyFinished(self):
+        self.groupBox.setEnabled(False)
+        QtGui.qApp.processEvents()
+        self.setWindowTitle("Identifying...")
+        QtGui.qApp.processEvents()
+        QtGui.QApplication.setOverrideCursor(QtGui.QCursor(QtCore.Qt.WaitCursor))
+
+        #self.marf.write_speakers()
+        ret = self.marf.identify(os.path.basename(self._last_testing_filename))
+        print ret
+
+        # Restore cursor
+        QtGui.QApplication.restoreOverrideCursor()
+        QtGui.QApplication.restoreOverrideCursor()
+        self.setWindowTitle("Speaker Identification")
+        self.groupBox.setEnabled(True)
+
+
+    def slotShowIdentifyDialog(self):
+        identifyWindow = SPIDIdentifyWindow(self)
+        identifyWindow.show()
 
     def slotSampleRecordingFinished(self):
         self.marf.update_speaker(self._last_id, s_training=self._fileName)

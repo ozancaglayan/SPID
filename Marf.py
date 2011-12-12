@@ -73,8 +73,12 @@ class Marf(object):
         return os.path.join(os.getcwd(), self.marf_path,
                             self.training_samples_dir, file_name)
 
-        print file_name
-        return file_name
+
+    def get_next_testing_sample_path(self):
+        import time
+        file_name = "testing-%s.wav" % time.strftime("%Y%m%d_%H%M%S")
+        return os.path.join(os.getcwd(), self.marf_path,
+                            self.testing_samples_dir, file_name)
 
     def train(self):
         train_cmd = self.cmd[:]
@@ -96,6 +100,7 @@ class Marf(object):
                                    stdout=subprocess.PIPE,
                                    stderr=subprocess.PIPE)
         stdout = process.communicate()[0]
+        print stdout
         for line in stdout.split("\n"):
             if "Expected Speaker's ID:" in line.strip():
                 return line.split("Expected Speaker's ID:")[1].strip()
@@ -118,6 +123,7 @@ class Marf(object):
                                                   s_training,
                                                   s_testing)
         self.next_id += 1
+        self.write_speakers()
 
     def update_speaker(self, s_id, s_name=None, s_training=None, s_testing=None):
         try:
