@@ -32,13 +32,13 @@ class Marf(object):
             data = line.strip().split(",")
 
             s_training = []
-            s_testing = ""
+            s_testing = []
 
             s_id = int(data.pop(0))
             s_name = data.pop(0)
             try:
                 s_training = data.pop(0).split("|")
-                s_testing = data.pop(0)
+                s_testing = data.pop(0).split("|")
             except IndexError:
                 pass
 
@@ -63,8 +63,8 @@ class Marf(object):
     def get_training_samples(self, s_id):
         return sorted(self.speakers[s_id].s_training)
 
-    def get_testing_sample(self, s_id):
-        return self.speakers[s_id].s_testing
+    def get_testing_samples(self, s_id):
+        return sorted(self.speakers[s_id].s_testing)
 
     def get_next_training_sample_path(self, s_id):
         import time
@@ -114,7 +114,7 @@ class Marf(object):
             if speaker.s_training:
                 speaker_file.write(",%s" % ("|".join(speaker.s_training)))
                 if speaker.s_testing:
-                    speaker_file.write(",%s" % speaker.s_testing)
+                    speaker_file.write(",%s" % ("|".join(speaker.s_testing)))
             speaker_file.write("\n")
 
     def add_speaker(self, s_name, s_training, s_testing):
@@ -133,7 +133,7 @@ class Marf(object):
             if s_training:
                 speaker.s_training.append(os.path.basename(s_training))
             if s_testing:
-                speaker.s_testing = s_testing
+                speaker.s_testing.append(os.path.basename(s_testing))
         except KeyError, e:
             print "No speaker with id %s!" % s_id
 

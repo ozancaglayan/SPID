@@ -98,7 +98,8 @@ class SPID(QtGui.QDialog, Ui_SPIDMainWindow):
 
     def slotPlayTestingSample(self):
         s_id, ok = self.comboBoxUsers.itemData(self.comboBoxUsers.currentIndex()).toInt()
-        file_path = self.marf.get_testing_sample(s_id)
+        # Take the first one, not so important
+        file_path = self.marf.get_testing_samples(s_id)[0]
         file_path = self.marf.get_testing_sample_path(file_path)
         self.phonon.setCurrentSource(Phonon.MediaSource(file_path))
         self.phonon.play()
@@ -156,8 +157,8 @@ class SPID(QtGui.QDialog, Ui_SPIDMainWindow):
     def reflectUserProperties(self, index):
         s_id, ok = self.comboBoxUsers.itemData(index).toInt()
         training_samples = self.marf.get_training_samples(s_id)
-        testing_sample = self.marf.get_testing_sample(s_id)
         self.listWidgetEnrollments.clear()
+        testing_sample = self.marf.get_testing_samples(s_id)[0]
         self.pushButtonPlayTestingSample.setEnabled(bool(testing_sample))
         self.pushButtonPlay.setEnabled(False)
         for sample in training_samples:
